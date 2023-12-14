@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu do Sistema</title>
+    <style>
+      #menu, #cadastro-usuarios, #bate-papo {
+        display: none;
+      }
+    </style>
+        <link rel="stylesheet" href="css.css">
+  </head>
+  <body>
+    <form id="loginForm">
+      <label for="username">Usuário:</label>
+      <input type="text" id="username" required>
+      <label for="password">Senha:</label>
+      <input type="password" id="password" required>
+      <button type="button" onclick="login()">Login</button>
+    </form>
+  
+    <div id="menu">
+      <h1>Menu do Sistema</h1>
+      <ul>
+        <li><a href="#" onclick="mostrarCadastroUsuarios()">Cadastro de Usuários</a></li>
+        <li><a href="#" onclick="mostrarBatePapo()">Bate-papo</a></li>
+      </ul>
+    </div>
+  
+    <div id="cadastro-usuarios">
+      <h2>Cadastro de Usuários</h2>
+      <form id="cadastroForm">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required>
+        <label for="dataNascimento">Data de Nascimento:</label>
+        <input type="date" id="dataNascimento" required>
+        <label for="nickname">Nickname ou apelido:</label>
+        <input type="text" id="nickname" required>
+        <button type="button" onclick="cadastrarUsuario()">Cadastrar</button>
+      </form>
+      <div id="lista-usuarios" style="display: none;">
+        <h3>Usuários Cadastrados</h3>
+        <ul id="usuariosListados">
+        </ul>
+        <button onclick="mostrarMenu()">Voltar para o Menu</button>
+      </div>
+    </div>
+  
+    <div id="bate-papo">
+      <h2>Bate-papo</h2>
+      <textarea id="mensagens" rows="10" cols="50" readonly></textarea>
+      <form id="mensagemForm">
+        <label for="mensagem">Nova Mensagem:</label>
+        <input type="text" id="mensagem" required>
+        <button type="button" onclick="enviarMensagem()">Enviar</button>
+      </form>
+    </div>
+  
+    <script>
+      let usuariosCadastrados = [];
+  
+      function login() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('menu').style.display = 'block';
+      }
+  
+      function mostrarMenu() {
+        document.getElementById('cadastro-usuarios').style.display = 'none';
+        document.getElementById('lista-usuarios').style.display = 'none';
+        document.getElementById('bate-papo').style.display = 'none';
+        document.getElementById('menu').style.display = 'block';
+      }
+  
+      function mostrarCadastroUsuarios() {
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('cadastro-usuarios').style.display = 'block';
+      }
+  
+      function cadastrarUsuario() {
+        let nome = document.getElementById('nome').value;
+        let dataNascimento = document.getElementById('dataNascimento').value;
+        let nickname = document.getElementById('nickname').value;
+  
+        if (nome && dataNascimento && nickname) {
+          usuariosCadastrados.push({ nome, dataNascimento, nickname });
+          atualizarListaUsuarios();
+        }
+      }
+  
+      function atualizarListaUsuarios() {
+        let listaUsuarios = document.getElementById('usuariosListados');
+        listaUsuarios.innerHTML = '';
+        usuariosCadastrados.forEach(usuario => {
+          let item = document.createElement('li');
+          item.appendChild(document.createTextNode(usuario.nome + ' - ' + usuario.dataNascimento + ' - ' + usuario.nickname));
+          listaUsuarios.appendChild(item);
+        });
+        document.getElementById('lista-usuarios').style.display = 'block';
+      }
+  
+      function mostrarBatePapo() {
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('bate-papo').style.display = 'block';
+      }
+  
+      function enviarMensagem() {
+        let mensagem = document.getElementById('mensagem').value;
+        document.getElementById('mensagens').value += mensagem + '\n';
+      }
+    </script>
+    <footer>
+  <p>Não tem uma conta? <a href="/cadastro">Cadastre-se</a></p>
+    </footer>
+</body>
+</html>
